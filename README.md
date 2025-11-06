@@ -189,7 +189,6 @@ Lista de empresas/projetos que utilizam a lib PyNFe
 - Link da lista [aqui](https://github.com/TadaSoftware/PyNFe/wiki/Quem-utiliza-PyNFe).
 - Sinta-se livre para incluir o nome da empresa/projeto na lista.
 
-
 Licença
 -----------
 PyNFe é licenciada sob a [LGPL-3.0](LICENSE).
