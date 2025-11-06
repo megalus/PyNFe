@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import base64
 import os
 import tempfile
 
@@ -41,23 +42,28 @@ class CertificadoA1(Certificado):
         """Separa o arquivo de certificado em dois: de chave e de certificado e retorna a string.
         Se caminho for True grava na pasta temporaria e retorna o caminho dos arquivos,
         senao retorna o objeto. Apos o uso devem ser excluidos com o metodo excluir.
+
+        self.certificado pode ser o caminho do arquivo .pfx ou o conteudo em bytes do arquivo em Base64.
         """
 
         try:
-            with open(self.caminho_arquivo, "rb") as cert_arquivo:
-                cert_conteudo = cert_arquivo.read()
-        except FileNotFoundError as exc:
-            raise FileNotFoundError(
-                "Falha ao abrir arquivo do certificado digital A1. Verifique o local do arquivo."
-            ) from exc
-        except PermissionError as exc:
-            raise PermissionError(
-                "Falha ao abrir arquivo do certificado digital A1. Verifique as permissoes do arquivo."
-            ) from exc
-        except Exception as exc:
-            raise Exception(
-                "Falha ao abrir arquivo do certificado digital A1. Causa desconhecida."
-            ) from exc
+            cert_conteudo = base64.b64decode(self.caminho_arquivo)
+        except Exception:
+            try:
+                with open(self.caminho_arquivo, "rb") as cert_arquivo:
+                    cert_conteudo = cert_arquivo.read()
+            except FileNotFoundError as exc:
+                raise FileNotFoundError(
+                    "Falha ao abrir arquivo do certificado digital A1. Verifique o local do arquivo."
+                ) from exc
+            except PermissionError as exc:
+                raise PermissionError(
+                    "Falha ao abrir arquivo do certificado digital A1. Verifique as permissoes do arquivo."
+                ) from exc
+            except Exception as exc:
+                raise Exception(
+                    "Falha ao abrir arquivo do certificado digital A1. Causa desconhecida."
+                ) from exc
 
         if not isinstance(senha, bytes):
             senha = str.encode(senha)
